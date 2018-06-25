@@ -6,7 +6,11 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
+var mudaRouter = require('./routes/muda');
+var desafioRouter = require('./routes/desafios');
+var emblemaRouter = require('./routes/emblemas');
+var hasHabitoRouter = require('./routes/usuario_has_habito');
+var hasDesafioRouter = require('./routes/usuario_has_desafio');
 var app = express();
 
 // view engine setup
@@ -21,8 +25,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/api/v1/usuarios', indexRouter);
 app.use('/api/v1/usuarios', usersRouter);
-// app.use('/api/v1/desafios', desafiosRouter);
-// app.use('/api/v1/muda', habitosRouter);
+// app.use('/api/v1/muda', desafiosRouter);
+app.use('/api/v1/muda', mudaRouter);
+
+app.use('/api/v1/desafio', desafioRouter);
+
+app.use('/api/v1/emblema', emblemaRouter);
+
+app.use('/api/v1/hashabito', hasHabitoRouter);
+
+app.use('/api/v1/hasdesafio', hasDesafioRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
