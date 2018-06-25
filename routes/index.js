@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pg = require('pg');
-const connectionstring = 'postgres://postgres:postgres@localhost:5432/muda';
+
 const config = {
   user: 'postgres',
   password: 'postgres',

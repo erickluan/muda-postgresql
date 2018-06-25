@@ -4,7 +4,7 @@ const pg = require('pg');
 
 const config = {
     user: 'postgres',
-    password: 'pinkfloyd5',
+    password: 'postgres',
     host: '127.0.0.1',
     port: '5432',
     database: 'muda',
