@@ -20,9 +20,7 @@ const config = {
       usuarioid: req.body.usuarioid,
       mudaid: req.body.mudaid,
       nome: req.body.nome,
-      pontos: req.body.pontos,
       arquivo: req.body.arquivo,
-      indicegeral: req.body.indicegeral 
     };
     pool.connect((err, client, done) => {
         if (err) {
@@ -30,11 +28,14 @@ const config = {
         }
         client
           .query(
-            'INSERT INTO muda(usuarioid, mudaid,nome, pontos, arquivo, indicegeral) values($1, $2, $3, $4, $5,$6)',
-            [data.usuarioid,data.mudaid, data.nome, data.pontos, data.arquivo, data.indicegeral], ( error, result ) => {
+            'INSERT INTO muda(usuarioid, mudaid, nome, arquivo) values($1, $2, $3, $4)',
+            [data.usuarioid, data.mudaid, data.nome, data.arquivo], ( error, result ) => {
               if ( error ) {
+                if (error.code == 23503) {
+                  return res.status(500).json({ message: 'Coloque um usuaário existente!'})
+                }
                 console.log(`Deu erro`);
-                return res.status( 500 ).json( { message: error.message, detail: error.detail } )
+                return res.status( 500 ).json( error )
               }
               console.log( 'Agora será que vai?' + result.rows[0] );
               return res.status( 200 ).json( result.rows[0] );
@@ -44,16 +45,15 @@ const config = {
       });
     });
     // GET muda 
-    router.get('/:mudaid', function(req, res, next) {
+    router.get('/:usuarioid', function(req, res, next) {
         const data = {
-            usuarioid: req.body.usuarioid,
-            mudaid: req.params.mudaid,
+            usuarioid: req.params.usuarioid,
             nome: req.body.nome,
             pontos: req.body.pontos,
             arquivo: req.body.arquivo,
             indicegeral: req.body.indicegeral 
             };
-        pool.query('SELECT * FROM muda where mudaid = $1',[data.mudaid], (err, response) => {
+        pool.query('SELECT * FROM muda where usuarioid = $1',[data.usuarioid], (err, response) => {
           if (err) {
             return next(err);
           }
